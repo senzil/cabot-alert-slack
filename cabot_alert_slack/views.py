@@ -32,3 +32,7 @@ def slack_message_callback(request):
     })
 
     return JsonResponse(message)
+
+
+
+
