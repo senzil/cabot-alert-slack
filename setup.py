@@ -9,5 +9,5 @@ setup(name='cabot-alert-slack',
       author_email='lblasc@znode.net',
       url='http://lblasc.znode.net',
       packages=find_packages(),
-      download_url = 'https://github.com/lblasc/cabot-alert-slack/tarball/0.6',
+      download_url = '',
      )
