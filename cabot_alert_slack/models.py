@@ -1,5 +1,5 @@
 from django.db import models
-from cabot.cabotapp.alert import AlertPlugin, AlertPluginUserData
+from cabot3.cabotapp.alert import AlertPlugin, AlertPluginUserData
 
 from os import environ as env
 

@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import SlackAlertUserData
 
-from cabot.cabotapp.models import Service
+from cabot3.cabotapp.models import Service
 import json
 import re
 

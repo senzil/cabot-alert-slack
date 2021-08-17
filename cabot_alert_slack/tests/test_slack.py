@@ -1,9 +1,9 @@
-from cabot.cabotapp.tests.tests_basic import LocalTestCase
+from cabot3.cabotapp.tests.tests_basic import LocalTestCase
 from mock import Mock, patch
 
-from cabot.cabotapp.models import UserProfile, Service
+from cabot3.cabotapp.models import UserProfile, Service
 from cabot_alert_slack import models
-from cabot.cabotapp.alert import update_alert_plugins
+from cabot3.cabotapp.alert import update_alert_plugins
 
 class TestSlackAlerts(LocalTestCase):
     def setUp(self):
