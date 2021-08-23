@@ -65,7 +65,7 @@ class SlackAlert(AlertPlugin):
 
     def _send_slack_alert(self, message, service, color='good', sender='Cabot'):
 
-        channel = '#' + env.get('SLACK_ALERT_CHANNEL')
+        channel = '/' + env.get('SLACK_ALERT_CHANNEL')
         url = env.get('SLACK_WEBHOOK_URL')
         icon_url = env.get('SLACK_ICON_URL')
 
@@ -79,30 +79,65 @@ class SlackAlert(AlertPlugin):
             })
 
         # TODO: handle color
-        resp = requests.post(url, data=json.dumps({
-            'channel': channel,
-            'username': sender[:15],
-            'icon_url': icon_url,
-            'link_names': 1,
-            'attachments': [{
-                'title': service.name,
-                'text': message,
-                'color': color,
-                'mrkdwn_in': ["text"],
-                'fields': [{
-                    'title': 'status',
-                    'value': service.overall_status,
-                    'short': True
-                    }, {
-                    'title': 'old status',
-                    'value': service.old_overall_status,
-                    'short': True
-                    }
-                ],
-                'callback_id': "acknowledge_{}".format(service.id),
-                'actions': actions
-            }]
-        }))
+
+        if 'slack' in url:
+            resp = requests.post(url, json={
+
+                'channel': channel,
+                'username': sender[:15],
+                'icon_url': icon_url,
+                'link_names': 1,
+                'attachments': [{
+                    'title': service.name,
+                    'text': message,
+                    'color': color,
+                    'mrkdwn_in': ["text"],
+                    'fields': [{
+                        'title': 'status',
+                        'value': service.overall_status,
+                        'short': True
+                        }, {
+                        'title': 'old status',
+                        'value': service.old_overall_status,
+                        'short': True
+                        }
+                    ],
+                    'callback_id': "acknowledge_{}".format(service.id),
+                    'actions': actions
+                }]
+            })
+            
+        else:
+            if color == 'danger':
+                color = 16711680
+            else:
+                color = 2555648
+            data =  {
+
+                "embeds": [
+                    {
+                    'title': service.name,
+                    "color": color,
+                    "description": message,
+                    "timestamp": "",
+                    "image": {},
+                    "thumbnail": {},
+                    "footer": {},
+                    'fields': [{
+                        'name': 'status',
+                        'value': service.overall_status,
+                        'short': True
+                        }, {
+                        'name': 'old status',
+                        'value': service.old_overall_status,
+                        'short': True
+                        }
+                    ]
+                }]
+            }
+
+            resp = requests.post(url, json=data)
+
 
 class SlackAlertUserData(AlertPluginUserData):
     name = "Slack Plugin"
